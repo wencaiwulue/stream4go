@@ -1,4 +1,4 @@
-package stream
+package stream4go
 
 import (
 	"fmt"

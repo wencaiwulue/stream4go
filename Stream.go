@@ -1,4 +1,4 @@
-package stream
+package stream4go
 
 type Api interface {
 	Of(elements ...interface{}) *Stream
