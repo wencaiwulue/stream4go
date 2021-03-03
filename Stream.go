@@ -1,11 +1,5 @@
 package stream4go
 
-type Api interface {
-	Of(elements ...interface{}) *Stream
-	Map(f func(interface{}) interface{}) *Stream
-	Collect(f func(interface{}) interface{}) *Stream
-}
-
 type Stream struct {
 	Api
 	Element []interface{}
