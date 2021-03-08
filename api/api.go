@@ -2,7 +2,18 @@ package api
 
 import "go/types"
 
+type baseApi interface {
+	isParallel() bool
+	sequential() *baseApi
+	parallel() *baseApi
+	unordered() *baseApi
+	onClose(closeHandler func()) *baseApi
+	close()
+}
+
 type Api interface {
+	baseApi
+
 	Distinct() *Api
 	ToSlice() []interface{}
 	Of(elements ...interface{}) *Api

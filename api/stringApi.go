@@ -3,6 +3,7 @@ package api
 import "go/types"
 
 type StringApi interface {
+	parallel() *Api
 	Distinct() *Api
 	ToSlice() []string
 	Of(elements ...string) *Api

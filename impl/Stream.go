@@ -1,10 +1,14 @@
 package impl
 
-import "stream4go/api"
+import (
+	"stream4go/api"
+	"sync"
+)
 
 type Stream struct {
 	api.StringApi
-	element []string
+	element    []string
+	isParallel bool
 }
 
 var StringStream = func() *Stream {
@@ -17,9 +21,28 @@ func (s *Stream) Of(element ...string) *Stream {
 	}
 }
 
+func (s *Stream) parallel() *Stream {
+	s.isParallel = true
+	return s
+}
+
 func (s *Stream) Map(mapFunc func(s string) string) *Stream {
-	for i := 0; i < len(s.element); i++ {
-		s.element[i] = mapFunc(s.element[i])
+	if s.isParallel {
+		wait := sync.WaitGroup{}
+		wait.Add(len(s.element))
+		for i := 0; i < len(s.element); i++ {
+			fi := i
+			go func(i int) {
+				s.element[i] = mapFunc(s.element[i])
+				wait.Done()
+			}(fi)
+		}
+		wait.Wait()
+		return s
+	} else {
+		for i := 0; i < len(s.element); i++ {
+			s.element[i] = mapFunc(s.element[i])
+		}
 	}
 	return s
 }
