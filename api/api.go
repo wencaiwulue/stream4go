@@ -18,6 +18,7 @@ type Api interface {
 	ToSlice() []interface{}
 	Of(elements ...interface{}) *Api
 	Map(f func(interface{}) interface{}) *Api
+	MapToString(func(interface{}) string) *Api
 	FlatMap(f func(interface{}) interface{}) *Api
 	Collect(f func(interface{}) interface{}) *Api
 	Filter(f func(interface{}) interface{}) *Api
