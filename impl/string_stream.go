@@ -34,11 +34,10 @@ func (s *StrStream) Map(mapFunc func(s string) string) *StrStream {
 		wait := sync.WaitGroup{}
 		wait.Add(len(s.elements))
 		for i := 0; i < len(s.elements); i++ {
-			fi := i
 			go func(i int) {
 				s.elements[i] = mapFunc(s.elements[i])
 				wait.Done()
-			}(fi)
+			}(i)
 		}
 		wait.Wait()
 	} else {
@@ -55,11 +54,10 @@ func (s *StrStream) MapToObj(mapFunc func(s string) interface{}) *StrStream {
 		wait := sync.WaitGroup{}
 		wait.Add(len(s.elements))
 		for i := 0; i < len(s.elements); i++ {
-			fi := i
 			go func(i int) {
 				//s.elements[i] = mapFunc(s.elements[i])
 				wait.Done()
-			}(fi)
+			}(i)
 		}
 		wait.Wait()
 	} else {
