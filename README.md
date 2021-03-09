@@ -1,2 +1,2 @@
 # stream4go
-** stream fo go **
+**Stream for go, idea comes from Java stream**
