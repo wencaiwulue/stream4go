@@ -3,21 +3,21 @@ package api
 import "go/types"
 
 type StringApi interface {
-	Parallel() *Api
-	Distinct() *Api
+	Parallel() *StringApi
+	Distinct() *StringApi
 	ToSlice() []string
-	Of(elements ...string) *Api
-	Map(f func(string) string) *Api
-	MapToObj(f func(string) interface{}) *Api
-	FlatMap(f func(string) string) *Api
-	Collect(f func(string) string) *Api
-	Filter(f func(string) string) *Api
-	DistinctF(f func(string) string) *Api
-	Sorted(f func(string) string) *Api
-	SortedDefault() *Api
-	Skip(n int64) *Api
-	Limit(n int64) *Api
-	Peek(func(string)) *Api
+	Of(elements ...string) *StringApi
+	Map(f func(string) string) *StringApi
+	MapToObj(f func(string) interface{}) *StringApi
+	FlatMap(f func(string) string) *StringApi
+	Collect(f func(string) string) *StringApi
+	Filter(f func(string) string) *StringApi
+	DistinctF(f func(string) string) *StringApi
+	Sorted(f func(string) string) *StringApi
+	SortedDefault() *StringApi
+	Skip(n int64) *StringApi
+	Limit(n int64) *StringApi
+	Peek(func(string)) *StringApi
 	ForEach(func(string))
 	ForEachOrdered()
 	ToArray() []string

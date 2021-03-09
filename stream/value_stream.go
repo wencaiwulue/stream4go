@@ -1,4 +1,4 @@
-package impl
+package stream
 
 import (
 	"reflect"
@@ -11,7 +11,7 @@ type valueStream struct {
 	isParallel bool
 }
 
-var valEmpty = &valueStream{}
+var valueEmpty = &valueStream{}
 
 var ValueStream = func() *valueStream {
 	return &valueStream{}
@@ -27,12 +27,12 @@ func (s *valueStream) MapToValue(fieldName string) *valueStream {
 	}
 }
 
-func (s *valueStream) MapToString() *StrStream {
+func (s *valueStream) MapToString() *stringStream {
 	strings := make([]string, 0, len(s.elements))
 	for _, element := range s.elements {
 		strings = append(strings, element.String())
 	}
-	return &StrStream{
+	return &stringStream{
 		elements:   strings,
 		isParallel: false,
 	}

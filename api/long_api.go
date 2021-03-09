@@ -3,21 +3,21 @@ package api
 import "go/types"
 
 type LongApi interface {
-	Parallel() *Api
-	Distinct() *Api
+	Parallel() *LongApi
+	Distinct() *LongApi
 	ToSlice() []int64
-	Of(elements ...int64) *Api
-	Range(open int64, close int64) *Api
-	Map(f func(int642 int64) int64) *Api
-	FlatMap(f func(int64) int64) *Api
-	Collect(f func(int64) int64) *Api
-	Filter(f func(int64) int64) *Api
-	DistinctF(f func(int64) int64) *Api
-	Sorted(f func(int64) int64) *Api
-	SortedDefault() *Api
-	Skip(n int64) *Api
-	Limit(n int64) *Api
-	Peek(func(int64)) *Api
+	Of(elements ...int64) *LongApi
+	Range(open int64, close int64) *LongApi
+	Map(f func(int642 int64) int64) *LongApi
+	FlatMap(f func(int64) int64) *LongApi
+	Collect(f func(int64) int64) *LongApi
+	Filter(f func(int64) int64) *LongApi
+	DistinctF(f func(int64) int64) *LongApi
+	Sorted(f func(int64) int64) *LongApi
+	SortedDefault() *LongApi
+	Skip(n int64) *LongApi
+	Limit(n int64) *LongApi
+	Peek(func(int64)) *LongApi
 	ForEach(f func(int642 int64))
 	ForEachOrdered()
 	ToArray() []int64

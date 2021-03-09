@@ -2,70 +2,69 @@ package test
 
 import (
 	"fmt"
-	"stream4go/impl"
+	"stream4go/stream"
 	"strings"
 	"testing"
 )
 
 func TestName(t *testing.T) {
-	ss := impl.StringStream.
-		Of([]string{"a", "b", "c"}...).
+	slice := stream.StringStream.
+		Of([]string{"first", "b", "c"}...).
 		Map(func(s string) string { return s + s }).
 		Filter(func(s string) bool { return strings.Contains(s, "cc") }).
 		Distinct().
 		ToSlice()
-	for _, e := range ss {
-		fmt.Println(e)
+	for _, s := range slice {
+		fmt.Println(s)
 	}
 }
 
 func TestLong(t *testing.T) {
-	impl.LongStream.Range(1, 10).ForEach(func(int642 int64) {
-		fmt.Println(int642)
-	})
+	stream.LongStream.
+		Range(1, 10).
+		ForEach(func(int642 int64) { fmt.Println(int642) })
 }
 
 func TestReflect(t *testing.T) {
-	u := User{
-		name: Name{a: "asdf"},
+	user := User{
+		name: Name{first: "asdf"},
 		age:  1,
 	}
-	impl.ObjectStream.
-		Of(u, u).
+	stream.ObjectStream.
+		Of(user, user).
 		MapToValue("name").
-		MapToValue("a").
+		MapToValue("first").
 		MapToString().
-		ForEach(func(string2 string) {
-			fmt.Printf("%v\n", string2)
-		})
+		ForEach(func(s string) { fmt.Printf("%v\n", s) })
 }
 
 func TestCollection(t *testing.T) {
-	u := User{
-		name: Name{a: "asdf"},
+	user := User{
+		name: Name{first: "asdf"},
 		age:  1,
 	}
-	impl.ObjectStream.Of([]User{u}, []User{u}).FlatMap().MapToValues("name.a").MapToString().ForEach(func(string2 string) {
-		fmt.Println(string2)
-	})
+	stream.ObjectStream.
+		Of([]User{user}, []User{user}).
+		FlatMap().
+		MapToValues("name.first").
+		MapToString().
+		ForEach(func(s string) { fmt.Println(s) })
 }
 
 func TestMap(t *testing.T) {
-	u := User{
-		name: Name{a: "asdf"},
+	user := User{
+		name: Name{first: "naison"},
 		age:  1,
 	}
-	impl.ObjectStream.
-		Of(map[User]User{u: u}, map[User]User{u: u}).
+	stream.ObjectStream.
+		Of(map[User]User{user: user}, map[User]User{user: user}).
 		FlatMap().
-		//MapToValues("key.name.a").
+		//MapToValues("key.name.first").
 		MapToValue("key").
 		MapToValue("name").
-		MapToValue("a").
+		MapToValue("first").
 		MapToString().
-		ForEach(func(string2 string) {
-			fmt.Println(string2)
-		})
+		ForEach(func(s string) { fmt.Println(s) })
 }
 
 type User struct {
@@ -73,5 +72,5 @@ type User struct {
 	age  int64
 }
 type Name struct {
-	a string
+	first string
 }

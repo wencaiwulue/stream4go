@@ -1,4 +1,4 @@
-package impl
+package stream
 
 import (
 	"fmt"
@@ -63,7 +63,7 @@ func (s *objectStream) MapToValue(fieldName string) *valueStream {
 		t := reflect.Indirect(reflect.ValueOf(i))
 		if t.Kind() != reflect.Struct {
 			fmt.Printf("Not struct, %v\n", t)
-			return valEmpty
+			return valueEmpty
 		}
 		values = append(values, t.FieldByName(fieldName))
 	}
@@ -76,7 +76,7 @@ func (s *objectStream) MapToValues(fieldName string) *valueStream {
 	split := strings.Split(fieldName, ".")
 	l := len(split)
 	if l == 0 {
-		return valEmpty
+		return valueEmpty
 	} else if l == 1 {
 		return s.MapToValue(split[0])
 	} else {

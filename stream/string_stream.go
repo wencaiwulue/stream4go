@@ -1,4 +1,4 @@
-package impl
+package stream
 
 import (
 	"stream4go/api"
@@ -6,30 +6,30 @@ import (
 	"sync"
 )
 
-type StrStream struct {
+type stringStream struct {
 	api.StringApi
 	elements   []string
 	isParallel bool
 }
 
-var empty = &StrStream{}
+var emptyString = &stringStream{}
 
-var StringStream = func() *StrStream {
-	return &StrStream{}
+var StringStream = func() *stringStream {
+	return &stringStream{}
 }()
 
-func (s *StrStream) Of(element ...string) *StrStream {
-	return &StrStream{
+func (s *stringStream) Of(element ...string) *stringStream {
+	return &stringStream{
 		elements: element,
 	}
 }
 
-func (s *StrStream) Parallel() *StrStream {
+func (s *stringStream) Parallel() *stringStream {
 	s.isParallel = true
 	return s
 }
 
-func (s *StrStream) Map(mapFunc func(s string) string) *StrStream {
+func (s *stringStream) Map(mapFunc func(s string) string) *stringStream {
 	if s.isParallel {
 		wait := sync.WaitGroup{}
 		wait.Add(len(s.elements))
@@ -49,7 +49,7 @@ func (s *StrStream) Map(mapFunc func(s string) string) *StrStream {
 }
 
 // TODO
-func (s *StrStream) MapToObj(mapFunc func(s string) interface{}) *StrStream {
+func (s *stringStream) MapToObj(mapFunc func(s string) interface{}) *stringStream {
 	if s.isParallel {
 		wait := sync.WaitGroup{}
 		wait.Add(len(s.elements))
@@ -68,31 +68,31 @@ func (s *StrStream) MapToObj(mapFunc func(s string) interface{}) *StrStream {
 	return s
 }
 
-func (s *StrStream) ToSlice() []string {
+func (s *stringStream) ToSlice() []string {
 	return s.elements[0:len(s.elements)]
 }
 
-func (s *StrStream) Skip(offset int64) *StrStream {
+func (s *stringStream) Skip(offset int64) *stringStream {
 	if len(s.elements) < int(offset) {
-		return empty
+		return emptyString
 	} else {
 		s.elements = s.elements[offset:]
 		return s
 	}
 }
 
-func (s *StrStream) Limit(limit int64) *StrStream {
+func (s *stringStream) Limit(limit int64) *stringStream {
 	if len(s.elements) > int(limit) {
 		s.elements = s.elements[0:limit]
 	}
 	return s
 }
 
-func (s *StrStream) Count() int64 {
+func (s *stringStream) Count() int64 {
 	return int64(len(s.elements))
 }
 
-func (s *StrStream) Max() string {
+func (s *stringStream) Max() string {
 	max := ""
 	for _, e := range s.elements {
 		max = util.MaxString(max, e)
@@ -100,7 +100,7 @@ func (s *StrStream) Max() string {
 	return max
 }
 
-func (s *StrStream) Min() string {
+func (s *stringStream) Min() string {
 	min := ""
 	for _, e := range s.elements {
 		min = util.MinString(min, e)
@@ -108,7 +108,7 @@ func (s *StrStream) Min() string {
 	return min
 }
 
-func (s *StrStream) Distinct() *StrStream {
+func (s *stringStream) Distinct() *stringStream {
 	set := make(map[string]string)
 	result := make([]string, 0, len(set))
 	for _, e := range s.elements {
@@ -121,7 +121,7 @@ func (s *StrStream) Distinct() *StrStream {
 	return s
 }
 
-func (s *StrStream) Filter(predicate func(string2 string) bool) *StrStream {
+func (s *stringStream) Filter(predicate func(string2 string) bool) *stringStream {
 	strings := make([]string, 0, len(s.elements))
 	for _, e := range s.elements {
 		if predicate(e) {
@@ -132,7 +132,7 @@ func (s *StrStream) Filter(predicate func(string2 string) bool) *StrStream {
 	return s
 }
 
-func (s *StrStream) ForEach(f func(string2 string)) {
+func (s *stringStream) ForEach(f func(string2 string)) {
 	for _, element := range s.elements {
 		f(element)
 	}
