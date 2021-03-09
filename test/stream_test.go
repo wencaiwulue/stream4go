@@ -55,9 +55,17 @@ func TestMap(t *testing.T) {
 		name: Name{a: "asdf"},
 		age:  1,
 	}
-	impl.ObjectStream.Of(map[User]User{u: u}, map[User]User{u: u}).FlatMap().MapToValues("key.name.a").MapToString().ForEach(func(string2 string) {
-		fmt.Println(string2)
-	})
+	impl.ObjectStream.
+		Of(map[User]User{u: u}, map[User]User{u: u}).
+		FlatMap().
+		//MapToValues("key.name.a").
+		MapToValue("key").
+		MapToValue("name").
+		MapToValue("a").
+		MapToString().
+		ForEach(func(string2 string) {
+			fmt.Println(string2)
+		})
 }
 
 type User struct {

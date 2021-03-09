@@ -39,7 +39,7 @@ func (s *objectStream) FlatMap() *objectStream {
 			for iter.Next() {
 				key := iter.Key()
 				value := iter.Value()
-				result = append(result, entry{
+				result = append(result, &entry{
 					key:   key,
 					value: value,
 				})
@@ -48,18 +48,19 @@ func (s *objectStream) FlatMap() *objectStream {
 			result = append(result, i)
 		}
 	}
+	//for _, e := range result {
+	//	a := reflect.TypeOf(reflect.Indirect(reflect.ValueOf(e)).FieldByName("key").Interface())
+	//	fmt.Println(a)
+	//}
 	return &objectStream{
-		elements: result,
+		elements: result[0:],
 	}
 }
 
 func (s *objectStream) MapToValue(fieldName string) *valueStream {
 	values := make([]reflect.Value, 0, len(s.elements))
 	for _, i := range s.elements {
-		t := reflect.ValueOf(i)
-		if t.Kind() == reflect.Ptr {
-			t = t.Elem()
-		}
+		t := reflect.Indirect(reflect.ValueOf(i))
 		if t.Kind() != reflect.Struct {
 			fmt.Printf("Not struct, %v\n", t)
 			return valEmpty
@@ -80,9 +81,10 @@ func (s *objectStream) MapToValues(fieldName string) *valueStream {
 		return s.MapToValue(split[0])
 	} else {
 		r := s.MapToValue(split[0])
-		for i := 1; i < l; i++ {
-			r = r.MapToValue(split[i])
-		}
+		r = r.MapToValue(split[1])
+		//for i := 1; i < l; i++ {
+		//	r = r.MapToValue(split[i])
+		//}
 		return r
 	}
 }
