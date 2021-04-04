@@ -1,3 +1,3 @@
-module github.com/go/stream
+module github.com/wencaiwulue/stream4go
 
 go 1.15
