@@ -1,8 +1,8 @@
 package stream
 
 import (
+	"github.com/wencaiwulue/stream4go/api"
 	"reflect"
-	"stream4go/api"
 )
 
 type valueStream struct {
@@ -47,4 +47,23 @@ func (s *valueStream) MapToLong() *longStream {
 		elements:   int64s,
 		isParallel: false,
 	}
+}
+
+func (s *valueStream) MapTo(p reflect.Type) *valueStream {
+	//va := reflect.New(p)
+
+	values := make([]reflect.Value, 0, len(s.elements))
+	for _, element := range s.elements {
+		reflect.TypeOf(p)
+		values = append(values, element.Convert(p))
+	}
+
+	return &valueStream{
+		elements:   values,
+		isParallel: false,
+	}
+}
+
+func (s *valueStream) toSlice() []reflect.Value {
+	return s.elements
 }

@@ -1,8 +1,8 @@
 package stream
 
 import (
+	"github.com/wencaiwulue/stream4go/api"
 	"reflect"
-	"stream4go/api"
 )
 
 type entryStream struct {

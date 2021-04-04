@@ -2,7 +2,8 @@ package test
 
 import (
 	"fmt"
-	"stream4go/stream"
+	"github.com/wencaiwulue/stream4go/stream"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -63,8 +64,7 @@ func TestMap(t *testing.T) {
 		MapToValue("key").
 		MapToValue("name").
 		MapToValue("first").
-		MapToString().
-		ForEach(func(s string) { fmt.Println(s) })
+		MapTo(reflect.TypeOf(""))
 }
 
 type User struct {

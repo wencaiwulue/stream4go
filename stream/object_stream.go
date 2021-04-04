@@ -2,8 +2,8 @@ package stream
 
 import (
 	"fmt"
+	"github.com/wencaiwulue/stream4go/api"
 	"reflect"
-	"stream4go/api"
 	"strings"
 )
 

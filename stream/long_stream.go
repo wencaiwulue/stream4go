@@ -1,9 +1,9 @@
 package stream
 
 import (
+	"github.com/wencaiwulue/stream4go/api"
+	"github.com/wencaiwulue/stream4go/util"
 	"math"
-	"stream4go/api"
-	"stream4go/util"
 	"sync"
 )
 
