@@ -7,7 +7,7 @@ import (
 
 type entryStream struct {
 	api.Api
-	elements   []entry
+	elements   []Entry
 	isParallel bool
 }
 
@@ -17,7 +17,7 @@ var EntryStream = func() *entryStream {
 	return &entryStream{}
 }()
 
-type entry struct {
-	key   reflect.Value
-	value reflect.Value
+type Entry struct {
+	Key   reflect.Value
+	Value reflect.Value
 }

@@ -26,7 +26,7 @@ func (s *objectStream) Of(element ...interface{}) *objectStream {
 }
 
 func (s *objectStream) FlatMap() *objectStream {
-	result := make([]interface{}, 0)
+	result := make([]interface{}, 0, 0)
 	for _, i := range s.elements {
 		k := reflect.ValueOf(i)
 		switch k.Kind() {
@@ -39,9 +39,9 @@ func (s *objectStream) FlatMap() *objectStream {
 			for iter.Next() {
 				key := iter.Key()
 				value := iter.Value()
-				result = append(result, &entry{
-					key:   key,
-					value: value,
+				result = append(result, &Entry{
+					Key:   key,
+					Value: value,
 				})
 			}
 		default:
@@ -49,7 +49,7 @@ func (s *objectStream) FlatMap() *objectStream {
 		}
 	}
 	//for _, e := range result {
-	//	a := reflect.TypeOf(reflect.Indirect(reflect.ValueOf(e)).FieldByName("key").Interface())
+	//	a := reflect.TypeOf(reflect.Indirect(reflect.ValueOf(e)).FieldByName("Key").Interface())
 	//	fmt.Println(a)
 	//}
 	return &objectStream{
@@ -87,4 +87,12 @@ func (s *objectStream) MapToValues(fieldName string) *valueStream {
 		//}
 		return r
 	}
+}
+
+func (s *objectStream) MapToString(f func(interface{}) string) *stringStream {
+	var str = make([]string, 0, len(s.elements))
+	for _, v := range s.elements {
+		str = append(str, f(v))
+	}
+	return StringStream.Of(str...)
 }
