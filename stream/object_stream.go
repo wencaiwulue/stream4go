@@ -96,3 +96,14 @@ func (s *objectStream) MapToString(f func(interface{}) string) *stringStream {
 	}
 	return StringStream.Of(str...)
 }
+
+func (s *objectStream) GroupBy(groupFunc func(interface{}) interface{}) map[interface{}][]interface{} {
+	result := make(map[interface{}][]interface{})
+	for _, element := range s.elements {
+		distinction := groupFunc(element)
+		//if reflect.DeepEqual(distinction, element) {
+		//}
+		result[distinction] = append(result[distinction], element)
+	}
+	return result
+}

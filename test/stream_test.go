@@ -3,7 +3,6 @@ package test
 import (
 	"fmt"
 	"github.com/wencaiwulue/stream4go/stream"
-	"reflect"
 	"strings"
 	"testing"
 )
@@ -39,6 +38,30 @@ func TestReflect(t *testing.T) {
 		ForEach(func(s string) { fmt.Printf("%v\n", s) })
 }
 
+func TestGroup(t *testing.T) {
+	u1 := User{
+		name: Name{first: "user1"},
+		age:  1,
+	}
+	u2 := User{
+		name: Name{first: "user2"},
+		age:  1,
+	}
+	result := stream.ObjectStream.
+		Of(u1, u2).
+		GroupBy(func(i interface{}) interface{} {
+			return i.(User).age
+		})
+	for k, v := range result {
+		age := k
+		name := stream.ObjectStream.Of(v...).MapToString(func(i interface{}) string {
+			return i.(User).name.first
+		}).ToSlice()
+		fmt.Printf("key: %v, value: %v\n", age, name)
+	}
+
+}
+
 func TestCollection(t *testing.T) {
 	user := User{
 		name: Name{first: "asdf"},
@@ -64,7 +87,9 @@ func TestMap(t *testing.T) {
 		MapToValue("key").
 		MapToValue("name").
 		MapToValue("first").
-		MapTo(reflect.TypeOf(""))
+		MapToString().ForEach(func(s string) {
+		fmt.Println(s)
+	})
 }
 
 type User struct {
